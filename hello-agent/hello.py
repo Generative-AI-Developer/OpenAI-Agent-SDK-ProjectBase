@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel
+from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel,function_tool
 from agents.run import RunConfig
 import asyncio
 
@@ -29,6 +29,12 @@ config = RunConfig(
     tracing_disabled=True,
 )
 
+@function_tool
+async def weather(location: str) -> str:
+    """Get the current weather for a given location."""
+    # This is a placeholder implementation.
+    return f"The current weather in {location} is sunny with a temperature of 25°C."
+
 # Step 04
 async def main():
     agent = Agent(
@@ -38,7 +44,7 @@ async def main():
     )
 
     # Step 05
-    result = await Runner.run(agent, "What is the capital of France?", run_config=config)
+    result = await Runner.run(agent, "What is the capital of France? and tell me about weather in peshawer now", run_config=config)
     print(result.final_output)
 
 # Step 06
